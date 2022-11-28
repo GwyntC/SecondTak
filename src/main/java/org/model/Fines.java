@@ -11,19 +11,9 @@ import java.util.List;
 @JsonAutoDetect
 @JacksonXmlRootElement(localName = "penalty")
 public class Fines {
-    private String name;
     @JacksonXmlElementWrapper(localName = "fines")
     @JacksonXmlProperty(localName = "fine")
     private List<Fine> fines = new ArrayList<>();
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public List<Fine> getFines() {
         return fines;
     }

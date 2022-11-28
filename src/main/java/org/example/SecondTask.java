@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class SecondTask {
 
     public static void jsonFilesToXml(String folderPath) {
-        GenericExtFilter filter = new GenericExtFilter("jsom");
+        GenericExtFilter filter = new GenericExtFilter("json");
         File folder = new File(folderPath);
         if (folder.listFiles() == null) {
             throw new IllegalArgumentException("Current directory contains no files!");
@@ -24,7 +24,7 @@ public class SecondTask {
             throw new IllegalArgumentException("Invalid path,input path was null!");
         } else if (!folder.isDirectory()) {
             throw new IllegalArgumentException("Directory does not exists!");
-        } else if (folder.list(filter).length == 0) {
+        } else if (Objects.requireNonNull(folder.list(filter)).length == 0) {
             throw new IllegalArgumentException("Provided folder contains no .json files!");
         }
 
