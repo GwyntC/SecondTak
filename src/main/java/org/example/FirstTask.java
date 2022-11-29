@@ -9,7 +9,7 @@ public class FirstTask {
     public static void setText(String fileName, String dest) {
         if (fileName == null || dest == null) {
             throw new IllegalArgumentException("Filepath and destination is null!");
-        } else if (fileName.contains(".xml")) {
+        } else if (!fileName.contains(".xml")) {
             throw new IllegalArgumentException("Wrong file format!!");
         }
         Pattern namePattern = Pattern.compile("\\s+(name\\s*=\\s*\"([ІЇА-Яа-яії]*)\")\\s*");//represents name="Name" with tabulation
