@@ -2,10 +2,12 @@ package org.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
 
 @JsonAutoDetect
+
+//model class
+//presents one json object with fields
+//used for read json ,as array unit
 public class Fine {
     @JsonProperty("fine_amount")
     private Double fineAmount;

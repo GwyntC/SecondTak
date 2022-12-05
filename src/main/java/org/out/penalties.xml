@@ -2,15 +2,15 @@
   <fines>
     <fine>
       <fine_amount>4680.0</fine_amount>
-      <type>"DRINK DRIVING"</type>
+      <type>DRINK DRIVING</type>
     </fine>
     <fine>
       <fine_amount>3020.18</fine_amount>
-      <type>"SPEEDING"</type>
+      <type>SPEEDING</type>
     </fine>
     <fine>
       <fine_amount>2340.0</fine_amount>
-      <type>"WRONG TRAFFIC"</type>
+      <type>WRONG TRAFFIC</type>
     </fine>
   </fines>
 </penalty>

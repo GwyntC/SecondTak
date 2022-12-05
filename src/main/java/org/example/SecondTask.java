@@ -1,15 +1,16 @@
 package org.example;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.model.Fine;
 import org.model.Fines;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,8 +21,6 @@ public class SecondTask {
         File folder = new File(folderPath);
         if (folder.listFiles() == null) {
             throw new IllegalArgumentException("Current directory contains no files!");
-        } else if (folderPath == null) {
-            throw new IllegalArgumentException("Invalid path,input path was null!");
         } else if (!folder.isDirectory()) {
             throw new IllegalArgumentException("Directory does not exists!");
         } else if (Objects.requireNonNull(folder.list(filter)).length == 0) {
@@ -34,6 +33,7 @@ public class SecondTask {
     }
 
     private static void jacksonAnnotation2Xml(Map<String, Double> map) {
+        //using XmlMapper and model object to write xml
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
@@ -48,23 +48,30 @@ public class SecondTask {
         Double fineAmount;
         Map<String, Double> fineMap = new HashMap<>();
         File dir = new File(folderPath);
+        //getting files in directory
         File[] listOfFiles = dir.listFiles();
         try {
             assert listOfFiles != null;
+            //reading one file at a time
             for (File file : listOfFiles) {
                 BufferedReader fileReader = new BufferedReader(new FileReader(file));
                 ObjectMapper mapper = new ObjectMapper();
-                ArrayNode items = mapper.readValue(fileReader, ArrayNode.class);
-                for (JsonNode node : items) {
-                    type = node.get("type").toString();
-                    fineAmount = Double.parseDouble(node.get("fine_amount").toString());
+                //using this setting to prevent fail from reading fields that are not in model
+                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                //getting list from array from json
+                Fine[] fines = mapper.readValue(fileReader, Fine[].class);
+                for (Fine fine : fines) {
+                    type = fine.getType();
+                    fineAmount = fine.getFineAmount();
                     if (!fineMap.containsKey(type)) {
                         fineMap.put(type, fineAmount);
                     } else {
                         fineMap.put(type, fineMap.get(type) + fineAmount);
                     }
                 }
+                fileReader.close();
             }
+            //sorting our map reversed order(biggest on top)
             fineMap = fineMap.entrySet().stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                     .collect(Collectors.toMap(
@@ -76,8 +83,10 @@ public class SecondTask {
     }
 
     private static Fines getFines(Map<String, Double> map) {
+        //getting object fom map to write xml in xmlMapper
         Fines fines = new Fines();
         Fine fine;
+        //looping throw map and adding keys and values to model
         for (var entry : map.entrySet()) {
             fine = new Fine();
             fine.setFineAmount(entry.getValue());

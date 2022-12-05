@@ -10,10 +10,14 @@ import java.util.List;
 
 @JsonAutoDetect
 @JacksonXmlRootElement(localName = "penalty")
+
+//model class for holding list of models
+//used for writing xml
 public class Fines {
     @JacksonXmlElementWrapper(localName = "fines")
     @JacksonXmlProperty(localName = "fine")
     private List<Fine> fines = new ArrayList<>();
+
     public List<Fine> getFines() {
         return fines;
     }
